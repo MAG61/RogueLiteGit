@@ -10,18 +10,25 @@ public class CooldownUI : MonoBehaviour
     [Header("Dash")]
     public Image dashImage;
     private GameObject player;
+    [Header("Skill")]
+    public Image skillImage;
 
     void Start()
     {
         player = GameObject.Find("Player");
         cooldown = Cooldown.instance;
         dashImage.fillAmount = 1;
+        skillImage.fillAmount = 1;
+        // skillImage.sprite = player.GetComponent<SkillManager>().currentSkill.skillSprite;
+        Image[] ims = skillImage.GetComponentsInChildren<Image>();
+        foreach(Image im in ims) im.sprite = player.GetComponent<SkillManager>().currentSkill.skillSprite;
     }
 
     // Update is called once per frame
     void Update()
     {
         Dash();
+        Skill();
     }
 
     private void Dash()
@@ -33,6 +40,18 @@ public class CooldownUI : MonoBehaviour
         else
         {
             dashImage.fillAmount = 1;
+        }
+    }
+
+    private void Skill()
+    {
+        if (cooldown.IsInCooldown(player.GetComponent<SkillManager>().currentSkill.skillName))
+        {
+            skillImage.fillAmount = 1 - ((cooldown.cooldowns[player.GetComponent<SkillManager>().currentSkill.skillName] - Time.time) / player.GetComponent<SkillManager>().currentSkill.skillCooldown);
+        }
+        else
+        {
+            skillImage.fillAmount = 1;
         }
     }
 }

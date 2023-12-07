@@ -5,7 +5,7 @@ using UnityEngine;
 public class WeaponManager : MonoBehaviour
 {
     [SerializeField] private Camera mainCamera;
-    [SerializeField] private Weapon mainWeapon;
+    public Weapon mainWeapon;
 
     public Transform mainWeaponLoc;
     private Vector3 mousePosition;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour
 {
-    [SerializeField] private Cooldown cooldown;
+    private Cooldown cooldown;
     public string dashCooldownKey = "dash";
 
     private Rigidbody2D rb;
@@ -29,30 +29,30 @@ public class CharacterMovement : MonoBehaviour
     {
         playerInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
+        //if (Input.GetKeyDown(KeyCode.Space) && playerInput != Vector2.zero)
+        //{
+        //    if (cooldown.IsInCooldown(dashCooldownKey))
+        //    {
+        //        GameObject.Find("DashUI").GetComponent<Animation>().Play("Dash-in-cooldown");
+        //    }
+        //    else
+        //    {
+        //        rb.AddForce(playerInput.normalized * dashMultiplyer * Time.deltaTime);
+        //        GameObject.Find("DashUI").GetComponent<Animation>().Play("Dash");
+        //        cooldown.StartCooldown(dashCooldownKey, dashCooldown);
+        //    }
+        //}
+
         if (Input.GetKeyDown(KeyCode.Space) && playerInput != Vector2.zero)
         {
             if (cooldown.IsInCooldown(dashCooldownKey))
             {
-                GameObject.Find("DashUI").GetComponent<Animation>().Play("Dash-in-cooldown");
-            }
-            else
-            {
-                rb.AddForce(playerInput.normalized * dashMultiplyer * Time.deltaTime);
-                GameObject.Find("DashUI").GetComponent<Animation>().Play("Dash");
-                cooldown.StartCooldown(dashCooldownKey, dashCooldown);
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.V) && playerInput != Vector2.zero)
-        {
-            if (cooldown.IsInCooldown(dashCooldownKey))
-            {
-                GameObject.Find("DashUI").GetComponent<Animation>().Play("Dash-in-cooldown");
+                GameObject.Find("DashUI").GetComponent<Animation>().Play("In-Cooldown");
             }
             else
             {
                 StartCoroutine(Dash());
-                GameObject.Find("DashUI").GetComponent<Animation>().Play("Dash");
+                GameObject.Find("DashUI").GetComponent<Animation>().Play("Activated");
                 cooldown.StartCooldown(dashCooldownKey, dashCooldown);
             }
         }

@@ -4,8 +4,15 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public float health = 25;
+    public float maxHealth = 25f;
+    private float health = 25f;
     public float speed;
+    public GameObject healthBar;
+
+    private void Start()
+    {
+        health = maxHealth;
+    }
 
     private void FixedUpdate()
     {
@@ -24,6 +31,7 @@ public class Enemy : MonoBehaviour
     public void GetDmg(float dmg)
     {
         health -= dmg;
+        healthBar.transform.localScale = new Vector3(health / maxHealth, 1, 1);
         if (health <= 0) Destroy(gameObject);
     }
 }
