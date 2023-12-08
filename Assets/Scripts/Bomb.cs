@@ -9,6 +9,8 @@ public class Bomb : MonoBehaviour
     public float force = 5;
     public float damage = 30;
 
+    [SerializeField] private ParticleSystem explotionEffect;
+
 
     void Start()
     {
@@ -37,13 +39,17 @@ public class Bomb : MonoBehaviour
                 }
             }
         }
-        Destroy(gameObject);
+
     }
 
     IEnumerator Explode()
     {
         yield return new WaitForSeconds(1.5f);
         explode();
+        GetComponent<SpriteRenderer>().enabled = false;
+        explotionEffect.Play();
+        yield return new WaitForSeconds(0.5f);
+        Destroy(gameObject);
     }
 
     private void OnDrawGizmos()

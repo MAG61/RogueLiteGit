@@ -9,6 +9,7 @@ public class CharacterMovement : MonoBehaviour
 
     private Rigidbody2D rb;
     public float speed = 3000f;
+    public float maxVelocity = 40f;
     public float dashMultiplyer = 500000f;
     public float dashCooldown = 3f;
     private Vector2 playerInput;
@@ -60,7 +61,10 @@ public class CharacterMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-
+        if (rb.velocity.magnitude > maxVelocity)
+        {
+            rb.velocity = rb.velocity.normalized * maxVelocity;
+        }
         // rb.velocity = new Vector2(horizontal, vertical).normalized * speed * Time.deltaTime;
         rb.AddForce(playerInput.normalized * speed * Time.deltaTime);
     }
@@ -68,9 +72,13 @@ public class CharacterMovement : MonoBehaviour
     IEnumerator Dash()
     {
         speed = dashSpeed;
+        GetComponent<TrailRenderer>().enabled = true;
 
         yield return new WaitForSeconds(dashTime);
 
         speed = baseSpeed;
+
+        yield return new WaitForSeconds(2 * dashTime);
+        GetComponent<TrailRenderer>().enabled = false;
     }
 }

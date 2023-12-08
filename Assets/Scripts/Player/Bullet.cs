@@ -9,6 +9,7 @@ public class Bullet : MonoBehaviour
     private void Awake()
     {
         Physics2D.IgnoreCollision(GetComponent<CircleCollider2D>(), GameObject.Find("Player").GetComponent<Collider2D>());
+        Physics2D.IgnoreCollision(GetComponent<CircleCollider2D>(), GameObject.FindGameObjectWithTag("Border").GetComponent<Collider2D>());
     }
 
     void Start()

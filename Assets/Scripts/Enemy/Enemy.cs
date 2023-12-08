@@ -1,13 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Enemy : MonoBehaviour
 {
+    public static event UnityAction EnemyDead;
+
     public float maxHealth = 25f;
     private float health = 25f;
     public float speed;
     public GameObject healthBar;
+    [SerializeField] private GameObject bloodEffect;
 
     private void Start()
     {
@@ -32,6 +36,11 @@ public class Enemy : MonoBehaviour
     {
         health -= dmg;
         healthBar.transform.localScale = new Vector3(health / maxHealth, 1, 1);
-        if (health <= 0) Destroy(gameObject);
+        Instantiate<GameObject>(bloodEffect).transform.position = transform.position;
+        if (health <= 0)
+        {
+            EnemyDead?.Invoke();
+            Destroy(gameObject);
+        }
     }
 }
