@@ -18,7 +18,8 @@ public class CameraController : MonoBehaviour
     }
     void Update()
     {
-
+        //transform.LookAt(target);
+        if (Time.timeScale == 0) return;
         if (Input.mouseScrollDelta.y > 0 && GetComponent<Camera>().orthographicSize > 5) GetComponent<Camera>().orthographicSize -= 0.25f;
         if (Input.mouseScrollDelta.y < 0 && GetComponent<Camera>().orthographicSize < 8) GetComponent<Camera>().orthographicSize += 0.25f;
     }

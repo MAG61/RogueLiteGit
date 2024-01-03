@@ -5,16 +5,20 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] Transform[] spawnPoints;
-    public float cooldown = 2f;
-    public int numberOfEnemies = 3;
+    public float baseCooldown = 2f;
+    public int baseNumberOfEnemies = 3;
+    private float cooldown;
+    private int numberOfEnemies;
     public GameObject enemyPrefab;
+    public bool state;
 
     private void Start()
     {
-        StartCoroutine(Spawn());
+        numberOfEnemies = baseNumberOfEnemies;
+        cooldown = baseCooldown;
     }
 
-    IEnumerator Spawn()
+    public IEnumerator Spawn()
     {
         for (int i = 0; i < numberOfEnemies; i++)
         {
@@ -25,4 +29,7 @@ public class EnemySpawner : MonoBehaviour
         yield return new WaitForSeconds(cooldown);
         StartCoroutine(Spawn());
     }
+
+    public void SetCoolDown(float newc) { cooldown = newc; }
+    public void SetNumberOfEnemies(int newc) { numberOfEnemies = newc; }
 }

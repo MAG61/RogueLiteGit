@@ -12,6 +12,8 @@ public class Enemy : MonoBehaviour
     public float speed;
     public GameObject healthBar;
     [SerializeField] private GameObject bloodEffect;
+    [SerializeField] private GameObject deathEffect;
+    [SerializeField] private GameObject damageIndicator;
 
     private void Start()
     {
@@ -37,10 +39,23 @@ public class Enemy : MonoBehaviour
         health -= dmg;
         healthBar.transform.localScale = new Vector3(health / maxHealth, 1, 1);
         Instantiate<GameObject>(bloodEffect).transform.position = transform.position;
+        GameObject dmgText = Instantiate<GameObject>(damageIndicator, transform.position, Quaternion.identity, null);
+        dmgText.GetComponent<TMPro.TextMeshPro>().text = dmg.ToString();
         if (health <= 0)
         {
             EnemyDead?.Invoke();
-            Destroy(gameObject);
+            DestroyEnd();
         }
+    }
+
+    public void DestroyEnd()
+    {
+
+        GameObject effect = Instantiate<GameObject>(deathEffect);
+        effect.transform.position = transform.position;
+#pragma warning disable CS0618 // Tür veya üye artýk kullanýlmýyor
+        effect.GetComponentInChildren<ParticleSystem>().startColor = GetComponentInChildren<SpriteRenderer>().color;
+#pragma warning restore CS0618 // Tür veya üye artýk kullanýlmýyor
+        Destroy(gameObject);
     }
 }

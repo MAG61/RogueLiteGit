@@ -7,42 +7,38 @@ public class CharacterMovement : MonoBehaviour
     private Cooldown cooldown;
     public string dashCooldownKey = "dash";
 
+    private PlayerStats stats;
     private Rigidbody2D rb;
-    public float speed = 3000f;
-    public float maxVelocity = 40f;
-    public float dashMultiplyer = 500000f;
-    public float dashCooldown = 3f;
+
     private Vector2 playerInput;
 
+    private float speed = 3000f;
+    public float maxVelocity = 40f;
 
+    public float dashCooldown = 3f;
     private float baseSpeed;
-    public float dashSpeed = 100000f;
+    private float dashSpeed = 100000f;
     public float dashTime = 0.1f;
     void Start()
     {
         cooldown = Cooldown.instance;
+        stats = GetComponent<PlayerStats>();
         rb = GetComponent<Rigidbody2D>();
 
-        baseSpeed = speed;
+        baseSpeed = stats.Speed;
+        dashSpeed = stats.baseDashSpeed;
+        speed = baseSpeed;
     }
 
     void Update()
     {
-        playerInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        if (baseSpeed != stats.Speed)
+        {
+            baseSpeed = stats.Speed;
+            speed = baseSpeed;
+        }
 
-        //if (Input.GetKeyDown(KeyCode.Space) && playerInput != Vector2.zero)
-        //{
-        //    if (cooldown.IsInCooldown(dashCooldownKey))
-        //    {
-        //        GameObject.Find("DashUI").GetComponent<Animation>().Play("Dash-in-cooldown");
-        //    }
-        //    else
-        //    {
-        //        rb.AddForce(playerInput.normalized * dashMultiplyer * Time.deltaTime);
-        //        GameObject.Find("DashUI").GetComponent<Animation>().Play("Dash");
-        //        cooldown.StartCooldown(dashCooldownKey, dashCooldown);
-        //    }
-        //}
+        playerInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
         if (Input.GetKeyDown(KeyCode.Space) && playerInput != Vector2.zero)
         {

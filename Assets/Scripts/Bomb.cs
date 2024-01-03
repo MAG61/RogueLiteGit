@@ -6,8 +6,8 @@ public class Bomb : MonoBehaviour
 {
     Collider2D[] inRadius = null;
     public float explotionRadius = 5;
-    public float force = 5;
-    public float damage = 30;
+    public float force = 5000;
+    public float damage = 60;
 
     [SerializeField] private ParticleSystem explotionEffect;
 
