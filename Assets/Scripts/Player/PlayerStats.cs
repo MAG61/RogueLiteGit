@@ -30,7 +30,7 @@ public class PlayerStats : MonoBehaviour
     public float AttackSpeedPercentage;
     public float Health;
 
-    private void Start()
+    private void Awake()
     {
         inv = GetComponent<PlayerInventory>();
     }

@@ -13,9 +13,13 @@ public class PlayerInventory : MonoBehaviour
 
     private PlayerStats stats;
 
-    private void Start()
+    private void Awake()
     {
         stats = GetComponent<PlayerStats>();
+    }
+
+    private void Start()
+    {
         SetStats();
     }
 
@@ -65,5 +69,11 @@ public class PlayerInventory : MonoBehaviour
         attackspeedPercentage = nAttackspeedPer;
 
         stats.CountStats();
+    }
+
+    IEnumerator WaitOneFrame()
+    {
+        yield return new WaitForEndOfFrame();
+
     }
 }
