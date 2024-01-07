@@ -103,6 +103,7 @@ MonoBehaviour:
   bloodEffect: {fileID: 8421118126070198047, guid: 7191190daad45c0478da52eee4690c61, type: 3}
   deathEffect: {fileID: 1532158412607711316, guid: be2e32dbe26bc994db44bf6e42f19db1, type: 3}
   damageIndicator: {fileID: 8989003067001590511, guid: 86edf79d6b1d53547a81402f74829560, type: 3}
+  coin: {fileID: 8740402205748738540, guid: 6a3988f8ecf4645468f96cc627db29ea, type: 3}
 --- !u!1 &3150970818162620826
 GameObject:
   m_ObjectHideFlags: 0

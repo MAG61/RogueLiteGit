@@ -7,7 +7,6 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameObject shopUI;
     private bool isShopEnabled = false;
 
-
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.I))
@@ -44,5 +43,6 @@ public class UIController : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
         shopUI.GetComponent<ShopUI>().ReloadShopItems();
+        shopUI.GetComponent<ShopUI>().ReloadWeaponSlots();
     }
 }

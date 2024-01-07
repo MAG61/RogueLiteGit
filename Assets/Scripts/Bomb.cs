@@ -34,7 +34,7 @@ public class Bomb : MonoBehaviour
                     crb.AddForce(distanceVector.normalized * explotionMultipyer);
                     if (c.TryGetComponent<Enemy>(out Enemy enemy))
                     {
-                        enemy.GetDmg(damage / distanceVector.magnitude);
+                        enemy.GetDmg((int)(damage / distanceVector.magnitude));
                     }
                 }
             }

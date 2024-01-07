@@ -77,6 +77,7 @@ public class WaveManager : MonoBehaviour
                         timeText.text = "0";
                         countDown = 0;
                         KillAllEnemies();
+                        foreach (GameObject g in GameObject.FindGameObjectsWithTag("Coin")) Destroy(g);
                         StartCoroutine(FightToWait());
                     }
                 }

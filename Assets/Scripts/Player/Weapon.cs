@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+public class Weapon : Item
 {
+    [Space(25)]
+    [Header("Weapon Stats")]
     [Range(0.1f, 20f)]
     public float fireRate;
     public float damage = 5f;
@@ -40,7 +42,7 @@ public class Weapon : MonoBehaviour
         canFire = true;
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(transform.position, range);
     }

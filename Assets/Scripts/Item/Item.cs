@@ -6,7 +6,11 @@ using UnityEngine;
 public class Item : MonoBehaviour
 {
     public string itemName;
+    public bool isWeapon = false;
+    public int cost;
 
+    [TextArea]
+    public string description;
     public MAP<BuffTypes.BuffType, float> buffs = new MAP<BuffTypes.BuffType, float>();
 
     public string GetDisplay()
@@ -14,7 +18,17 @@ public class Item : MonoBehaviour
         StringBuilder builder = new StringBuilder();
 
         builder.AppendLine(itemName);
-        builder.AppendLine();
+        if (description != null)
+        {
+            builder.AppendLine(description);
+        }
+        if (isWeapon)
+        {
+            builder.AppendLine("Damage: " + GetComponent<Weapon>().damage.ToString());
+            builder.AppendLine("Fire rate: " + GetComponent<Weapon>().fireRate.ToString());
+            builder.AppendLine("Accuracy: %" + GetComponent<Weapon>().accuracy.ToString());
+            builder.AppendLine("Range: " + GetComponent<Weapon>().range.ToString());
+        }
         foreach (BuffTypes.BuffType b in buffs.KeysList)
         {
             builder.Append(BuffTypes.GetDescription(b));

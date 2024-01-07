@@ -9,7 +9,7 @@ public class WeaponManager : MonoBehaviour
     [SerializeField] private Camera mainCamera;
 
     [Space]
-   
+
     [Header("Weapons")]
     public MAP<Weapon, int> weapons = new MAP<Weapon, int>();
     public Weapon mainWeapon;
@@ -20,6 +20,8 @@ public class WeaponManager : MonoBehaviour
     [Space]
 
     public float knockBackMultiplyer;
+    [SerializeField] private Transform weaponsParent;
+    public GameObject[] weaponPrefabs;
 
 
     private PlayerStats stats;
@@ -29,11 +31,11 @@ public class WeaponManager : MonoBehaviour
         stats = GetComponent<PlayerStats>();
         //weapons = FindObjectsOfType<Weapon>();
         //mainWeapon = weapons[0];
-        foreach (Weapon w in FindObjectsOfType<Weapon>())
-        {
-            weapons.KeysList.Add(w);
-            weapons.ValuesList.Add(weapons.ValuesList.Count + 1);
-        }
+        //foreach (Weapon w in FindObjectsOfType<Weapon>())
+        //{
+        //    weapons.KeysList.Add(w);
+        //    weapons.ValuesList.Add(weapons.ValuesList.Count + 1);
+        //}
 
         mainWeapon = weapons.KeysList[0];
         for (int i = 1; i < weapons.KeysList.Count; i++) automaticWeapons[i - 1].currentWeapon = weapons.KeysList[i];
@@ -49,6 +51,7 @@ public class WeaponManager : MonoBehaviour
     {
         if (Time.timeScale == 0) return;
         mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+
         Aiming();
         Shooting();
         if (Input.GetKeyDown(KeyCode.Q)) ChangeWeapon();
@@ -64,7 +67,6 @@ public class WeaponManager : MonoBehaviour
 
     }
 
-    #region Aiming
     private void Aiming()
     {
         Vector3 lookDir = (mousePosition - transform.position).normalized;
@@ -80,10 +82,7 @@ public class WeaponManager : MonoBehaviour
             mainWeapon.transform.localScale = new Vector3(1, 1, 1);
         }
     }
-    #endregion
 
-
-    #region Shooting
     private void Shooting()
     {
         if (Input.GetButton("Fire1"))
@@ -95,9 +94,45 @@ public class WeaponManager : MonoBehaviour
             }
         }
     }
-    #endregion
 
-    #region ChangeWeapon
+    public void AddWeapon(Item item)
+    {
+        Instantiate<GameObject>(item.gameObject, weaponsParent);
+        RefreshWeapons();
+        //foreach (GameObject go in weaponPrefabs)
+        //{
+        //    if (item == go.GetComponent<Item>())
+        //    {
+
+        //    }
+        //}
+    }
+
+    public void RefreshWeapons()
+    {
+        Weapon[] ws = GetComponentsInChildren<Weapon>();
+
+        foreach (Weapon w in ws)
+        {
+            if (!weapons.KeysList.Contains(w))
+            {
+                weapons.KeysList.Add(w);
+                weapons.ValuesList.Add(weapons.ValuesList.Count + 1);
+            }
+        }
+
+        foreach (Weapon w in weapons.KeysList)
+        {
+            if (!w.gameObject.activeSelf) w.gameObject.SetActive(true);
+        }
+
+        foreach (Weapon w in weapons.KeysList)
+        {
+            if (weapons.GetValue(w) == 1) mainWeapon = w;
+            else automaticWeapons[weapons.GetValue(w) - 2].currentWeapon = w;
+        }
+    }
+
     private void ChangeWeapon()
     {
         foreach (Weapon w in weapons.KeysList)
@@ -116,7 +151,6 @@ public class WeaponManager : MonoBehaviour
         GameObject.Find("Accuracy").GetComponent<Slider>().value = mainWeapon.accuracy;
         GameObject.Find("Damage").GetComponent<Slider>().value = mainWeapon.damage;
     }
-    #endregion
 
     #region FastUI
     public void FireRateChanged(float newValue)

@@ -7,9 +7,11 @@ public class ShopUI : MonoBehaviour
 
 
     private PlayerInventory inv;
+    private WeaponManager wManager;
 
     public ItemSlot[] itemSlots;
     public ShopItemSlot[] shopItems;
+    public ItemSlot[] weaponSlots;
 
     public GameObject[] buyabbles;
 
@@ -17,6 +19,7 @@ public class ShopUI : MonoBehaviour
     private void Start()
     {
         inv = GameObject.Find("Player").GetComponent<PlayerInventory>();
+        wManager = GameObject.Find("Player").GetComponent<WeaponManager>();
         itemSlots = GetComponentsInChildren<ItemSlot>();
     }
 
@@ -24,6 +27,7 @@ public class ShopUI : MonoBehaviour
 
     public void ReloadShopItems()
     {
+        inv.RefreshCurrency();
         for (int i = 0; i < shopItems.Length; i++)
         {
             if (!shopItems[i].isLocked)
@@ -34,14 +38,65 @@ public class ShopUI : MonoBehaviour
         }
     }
 
+    public void ReloadShopItems(int cost)
+    {
+        if (inv.coins >= cost)
+        {
+            inv.coins -= cost;
+            inv.RefreshCurrency();
+            for (int i = 0; i < shopItems.Length; i++)
+            {
+                if (!shopItems[i].isLocked)
+                {
+                    shopItems[i].currentItem = buyabbles[Random.Range(0, buyabbles.Length)].GetComponent<Item>();
+                    shopItems[i].ReloadSlot();
+                }
+            }
+        }
+    }
+
+    public void ReloadWeaponSlots()
+    {
+        for (int i = 0; i < wManager.weapons.KeysList.Count; i++)
+        {
+            weaponSlots[i].currentItem = wManager.weapons.KeysList[i].GetComponent<Item>();
+            weaponSlots[i].ReloadSlot();
+        }
+    }
+
     public void Buy(int i)
     {
         if (shopItems[i].currentItem == null) return;
+        if (inv.coins >= shopItems[i].currentItem.cost)
+        {
+            inv.coins -= shopItems[i].currentItem.cost;
+            inv.RefreshCurrency();
+
+            if (!shopItems[i].currentItem.isWeapon)
+            {
+                ItemBought(i);
+            }
+            else
+            {
+                WeaponBought(i);
+            }
+        }
+    }
+
+    private void ItemBought(int i)
+    {
         inv.items.Add(shopItems[i].currentItem);
         if (!SlotsContains(shopItems[i].currentItem)) { AddToSlots(shopItems[i].currentItem); }
         shopItems[i].ItemBought();
         ReloadItems();
         inv.SetStats();
+    }
+
+    private void WeaponBought(int i)
+    {
+        inv.GetComponent<WeaponManager>().AddWeapon(shopItems[i].currentItem);
+        shopItems[i].ItemBought();
+        ReloadWeaponSlots();
     }
 
     public bool SlotsContains(Item item)

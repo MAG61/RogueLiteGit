@@ -6,15 +6,15 @@ using TMPro;
 
 public class ShopItemSlot : MonoBehaviour
 {
-    public Image image;
+    [SerializeField] private Image image;
     public Item currentItem;
-    private TextMeshProUGUI desc;
+    [SerializeField] private TextMeshProUGUI desc;
+    [SerializeField] private TextMeshProUGUI price;
     public bool isLocked = false;
     GameObject toggle;
 
     private void Start()
     {
-        desc = GetComponentInChildren<TextMeshProUGUI>();
         toggle = GetComponentInChildren<Toggle>().gameObject;
     }
 
@@ -28,6 +28,8 @@ public class ShopItemSlot : MonoBehaviour
     {
         image.sprite = currentItem.GetComponent<SpriteRenderer>().sprite;
         desc.text = currentItem.GetDisplay();
+        price.text = currentItem.cost.ToString();
+        price.gameObject.SetActive(true);
         toggle.SetActive(true);
     }
 
@@ -36,6 +38,7 @@ public class ShopItemSlot : MonoBehaviour
         currentItem = null;
         image.sprite = null;
         desc.text = "";
+        price.gameObject.SetActive(false);
         toggle.GetComponent<Toggle>().isOn = false;
         toggle.SetActive(false);
     }

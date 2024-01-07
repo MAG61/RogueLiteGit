@@ -14,6 +14,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private GameObject bloodEffect;
     [SerializeField] private GameObject deathEffect;
     [SerializeField] private GameObject damageIndicator;
+    [SerializeField] private GameObject coin;
 
     private void Start()
     {
@@ -38,11 +39,15 @@ public class Enemy : MonoBehaviour
     {
         health -= dmg;
         healthBar.transform.localScale = new Vector3(health / maxHealth, 1, 1);
+
         Instantiate<GameObject>(bloodEffect).transform.position = transform.position;
+
         GameObject dmgText = Instantiate<GameObject>(damageIndicator, transform.position, Quaternion.identity, null);
-        dmgText.GetComponent<TMPro.TextMeshPro>().text = dmg.ToString();
+        dmgText.GetComponent<TMPro.TextMeshPro>().text = (dmg).ToString();
+
         if (health <= 0)
         {
+            Instantiate<GameObject>(coin, transform.position, Quaternion.identity, null); 
             EnemyDead?.Invoke();
             DestroyEnd();
         }

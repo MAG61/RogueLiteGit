@@ -18,7 +18,7 @@ public class ItemSlot : MonoBehaviour
         inv = GameObject.Find("Player").GetComponent<PlayerInventory>();
         image = GetComponent<Image>();
         amountText = GetComponentInChildren<TextMeshProUGUI>();
-        amountText.gameObject.SetActive(false);
+        if (amountText != null) amountText.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -45,7 +45,7 @@ public class ItemSlot : MonoBehaviour
         }
         else
         {
-            amountText.gameObject.SetActive(false);
+            if (amountText != null) amountText.gameObject.SetActive(false);
         }
     }
 }

@@ -32,6 +32,8 @@ public class CharacterMovement : MonoBehaviour
 
     void Update()
     {
+        if (Time.timeScale == 0) return;
+
         if (baseSpeed != stats.Speed)
         {
             baseSpeed = stats.Speed;
