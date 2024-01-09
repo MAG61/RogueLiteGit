@@ -7,6 +7,7 @@ public class CharacterMovement : MonoBehaviour
     private Cooldown cooldown;
     public string dashCooldownKey = "dash";
 
+    private InputHandler inputHandler;
     private PlayerStats stats;
     private Rigidbody2D rb;
 
@@ -24,6 +25,7 @@ public class CharacterMovement : MonoBehaviour
         cooldown = Cooldown.instance;
         stats = GetComponent<PlayerStats>();
         rb = GetComponent<Rigidbody2D>();
+        inputHandler = GetComponent<InputHandler>();
 
         baseSpeed = stats.Speed;
         dashSpeed = stats.baseDashSpeed;
@@ -40,9 +42,22 @@ public class CharacterMovement : MonoBehaviour
             speed = baseSpeed;
         }
 
-        playerInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        playerInput = inputHandler.GetPlayerInputNormalized();
+    }
 
-        if (Input.GetKeyDown(KeyCode.Space) && playerInput != Vector2.zero)
+    private void FixedUpdate()
+    {
+        if (rb.velocity.magnitude > maxVelocity)
+        {
+            rb.velocity = rb.velocity.normalized * maxVelocity;
+        }
+        // rb.velocity = new Vector2(horizontal, vertical).normalized * speed * Time.deltaTime;
+        rb.AddForce(playerInput.normalized * speed * Time.deltaTime);
+    }
+
+    public void dash()
+    {
+        if (playerInput != Vector2.zero)
         {
             if (cooldown.IsInCooldown(dashCooldownKey))
             {
@@ -55,16 +70,6 @@ public class CharacterMovement : MonoBehaviour
                 cooldown.StartCooldown(dashCooldownKey, dashCooldown);
             }
         }
-    }
-
-    private void FixedUpdate()
-    {
-        if (rb.velocity.magnitude > maxVelocity)
-        {
-            rb.velocity = rb.velocity.normalized * maxVelocity;
-        }
-        // rb.velocity = new Vector2(horizontal, vertical).normalized * speed * Time.deltaTime;
-        rb.AddForce(playerInput.normalized * speed * Time.deltaTime);
     }
 
     IEnumerator Dash()

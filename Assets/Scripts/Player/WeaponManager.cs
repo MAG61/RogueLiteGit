@@ -23,11 +23,12 @@ public class WeaponManager : MonoBehaviour
     [SerializeField] private Transform weaponsParent;
     public GameObject[] weaponPrefabs;
 
-
+    private PlayerInputs playerInputs;
     private PlayerStats stats;
     private Vector3 mousePosition;
     void Start()
     {
+        playerInputs = new PlayerInputs();
         stats = GetComponent<PlayerStats>();
         //weapons = FindObjectsOfType<Weapon>();
         //mainWeapon = weapons[0];
@@ -36,6 +37,7 @@ public class WeaponManager : MonoBehaviour
         //    weapons.KeysList.Add(w);
         //    weapons.ValuesList.Add(weapons.ValuesList.Count + 1);
         //}
+        playerInputs.Player.Enable();
 
         mainWeapon = weapons.KeysList[0];
         for (int i = 1; i < weapons.KeysList.Count; i++) automaticWeapons[i - 1].currentWeapon = weapons.KeysList[i];
@@ -51,9 +53,8 @@ public class WeaponManager : MonoBehaviour
     {
         if (Time.timeScale == 0) return;
         mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-
-        Aiming();
         Shooting();
+        Aiming();
         if (Input.GetKeyDown(KeyCode.Q)) ChangeWeapon();
     }
 
@@ -62,9 +63,7 @@ public class WeaponManager : MonoBehaviour
         if (mainWeapon.transform.position != mainWeaponLoc.position)
         {
             mainWeapon.transform.position = mainWeaponLoc.position;
-
         }
-
     }
 
     private void Aiming()
@@ -83,9 +82,9 @@ public class WeaponManager : MonoBehaviour
         }
     }
 
-    private void Shooting()
+    public void Shooting()
     {
-        if (Input.GetButton("Fire1"))
+        if (playerInputs.Player.Fire.ReadValue<float>() > 0.1f)
         {
             if (mainWeapon.canFire)
             {
@@ -99,13 +98,6 @@ public class WeaponManager : MonoBehaviour
     {
         Instantiate<GameObject>(item.gameObject, weaponsParent);
         RefreshWeapons();
-        //foreach (GameObject go in weaponPrefabs)
-        //{
-        //    if (item == go.GetComponent<Item>())
-        //    {
-
-        //    }
-        //}
     }
 
     public void RefreshWeapons()

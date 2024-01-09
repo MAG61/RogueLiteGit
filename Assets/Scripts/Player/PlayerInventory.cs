@@ -10,7 +10,7 @@ public class PlayerInventory : MonoBehaviour
     public int coins;
     [SerializeField] private TextMeshProUGUI currencyText;
 
-    public float health, attackspeed, damage, speedPercantage, attackspeedPercentage, damagePercantage;
+    public float speedPercantage, attackspeedPercentage, damagePercantage;
 
     public List<Item> items;
 
@@ -35,7 +35,7 @@ public class PlayerInventory : MonoBehaviour
 
     public void SetStats()
     {
-        float nHealth = 0f, nAttackspeed = 0f, nDamage = 0f, nSpeedPer = 0f, nAttackspeedPer = 0f, nDamagePer = 0f;
+        float nSpeedPer = 0f, nAttackspeedPer = 0f, nDamagePer = 0f;
 
         foreach (Item item in items)
         {
@@ -43,24 +43,12 @@ public class PlayerInventory : MonoBehaviour
             {
                 switch (buff)
                 {
-                    case BuffTypes.BuffType.attackSpeed:
-                        nAttackspeed += item.buffs.GetValue(buff);
-                        break;
-
                     case BuffTypes.BuffType.attackSpeedPercent:
                         nAttackspeedPer += item.buffs.GetValue(buff);
                         break;
 
-                    case BuffTypes.BuffType.damage:
-                        nDamage += item.buffs.GetValue(buff);
-                        break;
-
                     case BuffTypes.BuffType.damagePercent:
                         nDamagePer += item.buffs.GetValue(buff);
-                        break;
-
-                    case BuffTypes.BuffType.health:
-                        nHealth += item.buffs.GetValue(buff);
                         break;
 
                     case BuffTypes.BuffType.speedPercent:
@@ -71,11 +59,8 @@ public class PlayerInventory : MonoBehaviour
             }
         }
 
-        health = nHealth;
         speedPercantage = nSpeedPer;
-        damage = nDamage;
         damagePercantage = nDamagePer;
-        attackspeed = nAttackspeed;
         attackspeedPercentage = nAttackspeedPer;
 
         stats.CountStats();

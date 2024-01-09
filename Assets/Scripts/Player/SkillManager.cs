@@ -10,22 +10,17 @@ public class SkillManager : MonoBehaviour
         currentSkill = GetComponentInChildren<Skill>();
     }
 
-    void Update()
+    public void SkillUsed()
     {
-        if (Input.GetKeyDown(KeyCode.F))
+        if (cooldown.IsInCooldown(currentSkill.skillName))
         {
-            if (cooldown.IsInCooldown(currentSkill.skillName))
-            {
-                GameObject.Find("SkillUI").GetComponent<Animation>().Play("In-Cooldown");
-            }
-            else
-            {
-                GameObject.Find("SkillUI").GetComponent<Animation>().Play("Activated");
-                currentSkill.Activate();
-                cooldown.StartCooldown(currentSkill.skillName, currentSkill.skillCooldown);
-            }
-
-
+            GameObject.Find("SkillUI").GetComponent<Animation>().Play("In-Cooldown");
+        }
+        else
+        {
+            GameObject.Find("SkillUI").GetComponent<Animation>().Play("Activated");
+            currentSkill.Activate();
+            cooldown.StartCooldown(currentSkill.skillName, currentSkill.skillCooldown);
         }
     }
 }

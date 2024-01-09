@@ -46,11 +46,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: Pepsi
+  isWeapon: 0
   cost: 5
+  description: 
   buffs:
-    keysList: 0500000001000000
+    keysList: 01000000
     valuesList:
-    - -10
     - -15
 --- !u!212 &-6435309428117718661
 SpriteRenderer:

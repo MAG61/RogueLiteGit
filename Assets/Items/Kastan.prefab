@@ -50,9 +50,8 @@ MonoBehaviour:
   cost: -10
   description: "-Naber kanka, bulu\u015Fak m\u0131 kanka"
   buffs:
-    keysList: 01000000000000000300000005000000
+    keysList: 010000000000000003000000
     valuesList:
-    - -10
     - -15
     - -10
     - -25

@@ -10,11 +10,11 @@ public class ComboCounter : MonoBehaviour
     [SerializeField] private TextMeshProUGUI comboText;
     private void Start()
     {
-        Enemy.EnemyDead += addCombo;
+        Enemy.EnemyDead += AddCombo;
         comboText.text = combo.ToString();
     }
 
-    public void addCombo()
+    public void AddCombo()
     {
         combo++;
         comboText.text = combo.ToString();

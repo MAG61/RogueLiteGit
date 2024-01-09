@@ -46,12 +46,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: EMOB
+  isWeapon: 0
   cost: 15
+  description: 
   buffs:
-    keysList: 0300000005000000
+    keysList: 03000000
     valuesList:
     - 10
-    - 15
 --- !u!212 &-4349714830994589188
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -11,12 +11,8 @@ public class BuffTypes : MonoBehaviour
         health,
         [Description("Speed: % ")]
         speedPercent,
-        [Description("Damage: ")]
-        damage,
         [Description("Damage: % ")]
         damagePercent,
-        [Description("Attack speed: ")]
-        attackSpeed,
         [Description("Attack speed: % ")]
         attackSpeedPercent
     }
