@@ -72,7 +72,7 @@ public class WaveManager : MonoBehaviour
                 {
                     timeText.text = ((int)countDown).ToString();
                     countDown -= Time.deltaTime;
-                    if (countDown <= 0)
+                    if (countDown <= 0 || Input.GetKeyDown(KeyCode.T))
                     {
                         timeText.text = "0";
                         countDown = 0;

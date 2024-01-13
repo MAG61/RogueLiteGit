@@ -43,6 +43,7 @@ public class WeaponManager : MonoBehaviour
         for (int i = 1; i < weapons.KeysList.Count; i++) automaticWeapons[i - 1].currentWeapon = weapons.KeysList[i];
         mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
 
+        RefreshWeapons();
 
         GameObject.Find("FireRate").GetComponent<Slider>().value = mainWeapon.fireRate;
         GameObject.Find("Accuracy").GetComponent<Slider>().value = mainWeapon.accuracy;
@@ -100,6 +101,22 @@ public class WeaponManager : MonoBehaviour
         RefreshWeapons();
     }
 
+    public void RemoveWeapon(Item item)
+    {
+
+        for (int i = 0; i < weapons.KeysList.Count; i++)
+        {
+            if (weapons.KeysList[i] == mainWeapon) ChangeWeapon();
+            if (weapons.KeysList[i] == item)
+            {
+                weapons.KeysList.RemoveAt(i);
+                weapons.ValuesList.RemoveAt(i);
+                item.gameObject.SetActive(false);
+            }
+        }
+        RefreshWeapons();
+    }
+
     public void RefreshWeapons()
     {
         Weapon[] ws = GetComponentsInChildren<Weapon>();
@@ -118,10 +135,44 @@ public class WeaponManager : MonoBehaviour
             if (!w.gameObject.activeSelf) w.gameObject.SetActive(true);
         }
 
-        foreach (Weapon w in weapons.KeysList)
+        //foreach (Weapon w in weapons.KeysList)
+        //{
+        //    if (weapons.GetValue(w) == 1) mainWeapon = w;
+        //    else automaticWeapons[weapons.GetValue(w) - 2].currentWeapon = w;
+        //}
+
+        if (Mathf.Max(weapons.ValuesList.ToArray()) != weapons.KeysList.Count)
         {
-            if (weapons.GetValue(w) == 1) mainWeapon = w;
-            else automaticWeapons[weapons.GetValue(w) - 2].currentWeapon = w;
+            int index = 2;
+            foreach (Weapon w in weapons.KeysList)
+            {
+                if (w == mainWeapon) weapons.SetValue(w, 1);
+                else
+                {
+                    weapons.SetValue(w, index);
+                    index++;
+                }
+            }
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            if (i >= weapons.KeysList.Count)
+            {
+                if (i >= 1)
+                {
+                    automaticWeapons[i - 1].currentWeapon = null;
+                }
+                else
+                {
+                    mainWeapon = null;
+                }
+            }
+            else
+            {
+                if (weapons.GetValue(weapons.KeysList[i]) == 1) mainWeapon = weapons.KeysList[i];
+                else automaticWeapons[weapons.GetValue(weapons.KeysList[i]) - 2].currentWeapon = weapons.KeysList[i];
+            }
         }
     }
 

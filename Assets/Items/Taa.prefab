@@ -46,7 +46,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: Taa
+  isWeapon: 0
   cost: 12
+  description: 
   buffs:
     keysList: 0100000003000000
     valuesList:

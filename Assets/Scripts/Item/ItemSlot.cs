@@ -4,14 +4,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
-public class ItemSlot : MonoBehaviour
+public class ItemSlot : MonoBehaviour, IPointerClickHandler
 {
     private PlayerInventory inv;
 
     private Image image;
     public Item currentItem;
     private TextMeshProUGUI amountText;
+
+    [SerializeField] private CraftingSystem crafting;
 
     private void Start()
     {
@@ -29,7 +32,20 @@ public class ItemSlot : MonoBehaviour
 
     public void ReloadSlot()
     {
-        if (currentItem == null) return;
+        if (currentItem != null)
+        {
+            if (!inv.items.Contains(currentItem) && !currentItem.isWeapon)
+            {
+                currentItem = null;
+                GetComponentInParent<ShopUI>().SlideInventory(this);
+            }
+        }
+
+        if (currentItem == null)
+        {
+            image.sprite = null;
+            return;
+        }
         image.sprite = currentItem.GetComponent<SpriteRenderer>().sprite;
         int amount = 0;
 
@@ -47,5 +63,13 @@ public class ItemSlot : MonoBehaviour
         {
             if (amountText != null) amountText.gameObject.SetActive(false);
         }
+    }
+
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (!crafting.gameObject.activeSelf) return;
+
+        crafting.InvToCrafting(currentItem);
     }
 }

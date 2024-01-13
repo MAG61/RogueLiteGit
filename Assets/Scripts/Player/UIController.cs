@@ -5,6 +5,8 @@ using UnityEngine;
 public class UIController : MonoBehaviour
 {
     [SerializeField] private GameObject shopUI;
+    [SerializeField] private GameObject shopItems;
+    [SerializeField] private GameObject CraftUI;
     private bool isShopEnabled = false;
 
     void Update()
@@ -27,7 +29,11 @@ public class UIController : MonoBehaviour
         }
     }
 
-    public void CloseShop() { if (isShopEnabled) isShopEnabled = false; }
+    public void CloseShop()
+    {
+        CloseCrafting();
+        isShopEnabled = false;
+    }
     public void OpenShop()
     {
         if (!isShopEnabled)
@@ -44,5 +50,17 @@ public class UIController : MonoBehaviour
         yield return new WaitForEndOfFrame();
         shopUI.GetComponent<ShopUI>().ReloadShopItems();
         shopUI.GetComponent<ShopUI>().ReloadWeaponSlots();
+    }
+
+    public void OpenCrafting()
+    {
+        shopItems.SetActive(false);
+        CraftUI.SetActive(true);
+    }
+
+    public void CloseCrafting()
+    {
+        shopItems.SetActive(true);
+        CraftUI.SetActive(false);
     }
 }

@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 4872475616720043292}
   - component: {fileID: 6304616824019879833}
   m_Layer: 0
-  m_Name: Weapon
+  m_Name: UMP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

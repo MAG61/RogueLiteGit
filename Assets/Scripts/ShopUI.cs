@@ -57,9 +57,16 @@ public class ShopUI : MonoBehaviour
 
     public void ReloadWeaponSlots()
     {
-        for (int i = 0; i < wManager.weapons.KeysList.Count; i++)
+        for (int i = 0; i < weaponSlots.Length; i++)
         {
-            weaponSlots[i].currentItem = wManager.weapons.KeysList[i].GetComponent<Item>();
+            if (i < wManager.weapons.KeysList.Count)
+            {
+                weaponSlots[i].currentItem = wManager.weapons.KeysList[i].GetComponent<Item>();
+            }
+            else
+            {
+                weaponSlots[i].currentItem = null;
+            }
             weaponSlots[i].ReloadSlot();
         }
     }
@@ -99,6 +106,57 @@ public class ShopUI : MonoBehaviour
         ReloadWeaponSlots();
     }
 
+    public void GoInv(Item item, bool isNew = false)
+    {
+        if (!item.isWeapon)
+        {
+            ItemGoInv(item);
+        }
+        else
+        {
+            WeaponGoInv(item, isNew);
+        }
+    }
+
+    private void ItemGoInv(Item item)
+    {
+        inv.items.Add(item);
+        if (!SlotsContains(item)) { AddToSlots(item); }
+        ReloadItems();
+    }
+
+    private void WeaponGoInv(Item item, bool isNew = false)
+    {
+        if (isNew) inv.GetComponent<WeaponManager>().AddWeapon(item);
+        wManager.RefreshWeapons();
+        ReloadWeaponSlots();
+    }
+
+    public void GoCraft(Item item)
+    {
+        if (!item.isWeapon)
+        {
+            ItemGoCraft(item);
+        }
+        else
+        {
+            WeaponGoCraft(item);
+        }
+    }
+
+    private void ItemGoCraft(Item item)
+    {
+        inv.items.Remove(item);
+        ReloadItems();
+    }
+
+    private void WeaponGoCraft(Item item)
+    {
+        inv.GetComponent<WeaponManager>().RemoveWeapon(item);
+        wManager.RefreshWeapons();
+        ReloadWeaponSlots();
+    }
+
     public bool SlotsContains(Item item)
     {
         foreach (ItemSlot itemslot in itemSlots)
@@ -118,5 +176,26 @@ public class ShopUI : MonoBehaviour
                 break;
             }
         }
+    }
+
+
+    public void SlideInventory(ItemSlot slot)
+    {
+        int index = 0;
+        for (int i = 0; i < itemSlots.Length; i++)
+        {
+            if (itemSlots[i] == slot)
+            {
+                index = i;
+                break;
+            }
+        }
+
+        for (int i = index; i < itemSlots.Length - 1; i++)
+        {
+            itemSlots[i].currentItem = itemSlots[i + 1].currentItem;
+        }
+        itemSlots[itemSlots.Length - 1].currentItem = null;
+        ReloadItems();
     }
 }
